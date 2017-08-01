@@ -65,7 +65,7 @@ struct _TextView
 
 	gboolean default_text;
 	gboolean is_in_signature;
-	gboolean is_diff;
+	gboolean is_in_diff;
 	gboolean is_attachment;
 	
 	GSList *uri_list;

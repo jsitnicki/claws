@@ -1073,7 +1073,7 @@ static void textview_write_body(TextView *textview, MimeInfo *mimeinfo)
 	procmime_force_encoding(textview->messageview->forced_encoding);
 	
 	textview->is_in_signature = FALSE;
-	textview->is_diff = FALSE;
+	textview->is_in_diff = FALSE;
 	textview->is_attachment = FALSE;;
 
 	procmime_decode_content(mimeinfo);
@@ -1173,7 +1173,7 @@ textview_default:
 #endif
 		if (!g_ascii_strcasecmp(mimeinfo->subtype, "x-patch")
 				|| !g_ascii_strcasecmp(mimeinfo->subtype, "x-diff"))
-			textview->is_diff = TRUE;
+			textview->is_in_diff = TRUE;
 
 		/* Displayed part is an attachment, but not an attached
 		 * e-mail. Set a flag, so that elsewhere in the code we
@@ -1630,7 +1630,7 @@ static void textview_write_line(TextView *textview, const gchar *str,
 
 	if (prefs_common.enable_color) {
 		if (strncmp(buf, "diff --git", 10) == 0
-			|| textview->is_diff) {
+			|| textview->is_in_diff) {
 			if (strncmp(buf, "+++ ", 4) == 0)
 				fg_color = "diff-add-file";
 			else if (buf[0] == '+')
@@ -1642,7 +1642,7 @@ static void textview_write_line(TextView *textview, const gchar *str,
 			else if (strncmp(buf, "@@ ", 3) == 0 &&
 					strcmp(buf+strlen(buf)-4, " @@\n") == 0)
 				fg_color = "diff-hunk";
-			textview->is_diff = TRUE;
+			textview->is_in_diff = TRUE;
 		} else if (strcmp(buf,"-- \n") == 0
 				|| strcmp(buf, "- -- \n") == 0
 				|| textview->is_in_signature) {
