@@ -1629,7 +1629,8 @@ static void textview_write_line(TextView *textview, const gchar *str,
 	}
 
 	if (prefs_common.enable_color) {
-		if (textview->is_diff) {
+		if (strncmp(buf, "diff --git", 10) == 0
+			|| textview->is_diff) {
 			if (strncmp(buf, "+++ ", 4) == 0)
 				fg_color = "diff-add-file";
 			else if (buf[0] == '+')
@@ -1641,6 +1642,7 @@ static void textview_write_line(TextView *textview, const gchar *str,
 			else if (strncmp(buf, "@@ ", 3) == 0 &&
 					strcmp(buf+strlen(buf)-4, " @@\n") == 0)
 				fg_color = "diff-hunk";
+			textview->is_diff = TRUE;
 		} else if (strcmp(buf,"-- \n") == 0
 				|| strcmp(buf, "- -- \n") == 0
 				|| textview->is_in_signature) {
